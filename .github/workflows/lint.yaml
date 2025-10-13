@@ -15,7 +15,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        node: [lts/*]
+        node: [20]
 
     steps:
       - name: Checkout
@@ -30,8 +30,11 @@ jobs:
       - name: Install dependencies
         run: yarn install --immutable
 
-      - name: Run hardhat node, deploy contracts (& generate contracts typescript output)
-        run: yarn chain & yarn deploy
+      - name: Run hardhat node and deploy contracts
+        run: |
+          nohup yarn chain > /dev/null 2>&1 &
+          sleep 10
+          yarn deploy --network localhost
 
       - name: Run nextjs lint
         run: yarn next:lint --max-warnings=0
