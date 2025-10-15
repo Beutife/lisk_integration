@@ -149,7 +149,6 @@ export default function TokenPage() {
             <div className="card-body">
               <div className="flex items-center justify-between mb-2">
                 <h2 className="text-sm font-bold text-gray-500 uppercase">Token Info</h2>
-                <span className="text-2xl">💎</span>
               </div>
               <p className="text-3xl font-black text-blue-600">{tokenName || "..."}</p>
               <p className="text-lg font-medium text-blue-600">{tokenSymbol || "..."}</p>
@@ -160,7 +159,6 @@ export default function TokenPage() {
             <div className="card-body">
               <div className="flex items-center justify-between mb-2">
                 <h2 className="text-sm font-bold text-gray-500 uppercase">Total Supply</h2>
-                <span className="text-2xl">📊</span>
               </div>
               <p className="text-3xl font-black text-purple-600">
                 {totalSupply ? Number(formatEther(totalSupply)).toLocaleString() : "0"}
@@ -173,7 +171,6 @@ export default function TokenPage() {
             <div className="card-body">
               <div className="flex items-center justify-between mb-2">
                 <h2 className="text-sm font-bold text-gray-500 uppercase">Your Balance</h2>
-                <span className="text-2xl">💰</span>
               </div>
               <p className="text-3xl font-black text-green-600">
                 {userBalance ? Number(formatEther(userBalance)).toLocaleString() : "0"}
@@ -188,7 +185,6 @@ export default function TokenPage() {
           <div className="card bg-gradient-to-br from-blue-500 to-purple-600 shadow-2xl text-white">
             <div className="card-body">
               <div className="flex items-center gap-3 mb-4">
-                <span className="text-4xl">🎁</span>
                 <h2 className="card-title text-2xl">Claim Free Tokens</h2>
               </div>
               <p className="mb-4 text-blue-100">Get up to 100 LSEA tokens • One-time claim</p>
@@ -257,7 +253,6 @@ export default function TokenPage() {
           <div className="card bg-white dark:bg-gray-800 shadow-2xl">
             <div className="card-body">
               <div className="flex items-center gap-3 mb-4">
-                <span className="text-4xl">💸</span>
                 <h2 className="card-title text-2xl text-green-600">Transfer Tokens</h2>
               </div>
 
@@ -291,7 +286,7 @@ export default function TokenPage() {
               </div>
 
               <button
-                className="btn btn-lg  btn-primary font-bold"
+                className="btn btn-lg  btn-primary font-bold text-blue-600"
                 onClick={handleTransfer}
                 disabled={!recipient || !transferAmount}
               >

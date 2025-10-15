@@ -117,7 +117,6 @@ export default function NFTPage() {
             <div className="card-body">
               <div className="flex items-center justify-between mb-2">
                 <h2 className="text-sm font-bold text-gray-500 uppercase">Collection</h2>
-                <span className="text-2xl">🎨</span>
               </div>
               <p className="text-3xl font-black text-purple-600">{nftName || "..."}</p>
               <p className="text-lg font-medium text-purple-600">{nftSymbol || "..."}</p>
@@ -128,7 +127,6 @@ export default function NFTPage() {
             <div className="card-body">
               <div className="flex items-center justify-between mb-2">
                 <h2 className="text-sm font-bold text-gray-500 uppercase">Total Minted</h2>
-                <span className="text-2xl">📈</span>
               </div>
               <p className="text-3xl font-black text-pink-600">{totalSupply?.toString() || "0"}</p>
               <p className="text-lg font-medium text-pink-600">NFTs Created</p>
@@ -139,7 +137,6 @@ export default function NFTPage() {
             <div className="card-body">
               <div className="flex items-center justify-between mb-2">
                 <h2 className="text-sm font-bold text-gray-500 uppercase">Your NFTs</h2>
-                <span className="text-2xl">👤</span>
               </div>
               <p className="text-3xl font-black text-orange-600">{userBalance?.toString() || "0"}</p>
               <p className="text-lg font-medium text-orange-600">Badges Owned</p>
@@ -152,7 +149,6 @@ export default function NFTPage() {
           <div className="card bg-gradient-to-br from-purple-600 via-pink-600 to-orange-600 shadow-2xl text-white">
             <div className="card-body">
               <div className="flex items-center gap-3 mb-4">
-                <span className="text-4xl">⚡</span>
                 <h2 className="card-title text-2xl">Mint Your Badge</h2>
               </div>
               <p className="mb-4 text-purple-100">Create a unique Builder Badge NFT</p>

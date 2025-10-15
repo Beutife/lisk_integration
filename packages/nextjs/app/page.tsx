@@ -15,7 +15,6 @@ const Home: NextPage = () => {
         <div className="text-center mb-16">
           <div className="inline-block mb-6">
             <div className="flex items-center gap-4 bg-white dark:bg-gray-800 rounded-full px-8 py-4 shadow-2xl">
-              <span className="text-4xl">🚀</span>
               <h1 className="text-4xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
                 Lisk Builder DApp
               </h1>
