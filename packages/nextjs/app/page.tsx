@@ -150,6 +150,39 @@ const Home: NextPage = () => {
               </div>
             </div>
           </Link>
+
+          {/* Events Card */}
+          <Link href="/events" className="group">
+            <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-green-500 to-teal-600 p-1 shadow-2xl transition-all duration-300 hover:shadow-green-500/50 hover:scale-105">
+              <div className="bg-white dark:bg-gray-800 rounded-3xl p-8 h-full">
+                <div className="flex items-center justify-between mb-6">
+                  <div className="p-4 bg-gradient-to-br from-green-500 to-teal-600 rounded-2xl shadow-lg">
+                    <span className="text-5xl">📜</span>
+                  </div>
+                  <svg
+                    className="w-8 h-8 text-gray-400 group-hover:text-green-600 group-hover:translate-x-2 transition-all"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                  </svg>
+                </div>
+                <h2 className="text-3xl font-black mb-3 bg-gradient-to-r from-green-600 to-teal-600 bg-clip-text text-transparent">
+                  Transaction Events
+                </h2>
+                <p className="text-gray-600 dark:text-gray-300 mb-6 text-lg">
+                  View LSEA token and LBB NFT transfer history.
+                </p>
+                <div className="mt-6 inline-flex items-center gap-2 text-green-600 dark:text-green-400 font-bold group-hover:gap-4 transition-all">
+                  <span>View Events</span>
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </Link>
         </div>
 
         {/* Features Section */}
