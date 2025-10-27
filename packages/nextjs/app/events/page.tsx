@@ -30,6 +30,24 @@ const Events: NextPage = () => {
   const currentEvents = eventType === "token" ? tokenEvents || [] : nftEvents || [];
   const isLoading = eventType === "token" ? tokenLoading : nftLoading;
 
+  // Search and pagination state
+  const [searhAddress, setSearchAddress] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
+  // Filter events based on search
+  const filteredEvents = currentEvents.filter(event => {
+    if (!searhAddress) return true;
+    const search = searhAddress.toLowerCase();
+    return event.args.from?.toLowerCase().includes(search) || event.args.to?.toLowerCase().includes(search);
+  });
+
+  // Calculate pagination
+  const totalPages = Math.ceil(filteredEvents.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const paginatedEvents = filteredEvents.slice(startIndex, startIndex + itemsPerPage);
+
+  // Show connection prompt if wallet not connected
   if (!isConnected) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-purple-900 dark:to-pink-900">
@@ -81,7 +99,11 @@ const Events: NextPage = () => {
                       ? "tab-active bg-gradient-to-br from-blue-500 to-purple-600 text-white"
                       : "text-gray-600"
                   }`}
-                  onClick={() => setEventType("token")}
+                  onClick={() => {
+                    setEventType("token");
+                    setCurrentPage(1);
+                    setSearchAddress("");
+                  }}
                 >
                   🪙 Token Transfers ({tokenEvents?.length || 0})
                 </button>
@@ -91,7 +113,11 @@ const Events: NextPage = () => {
                       ? "tab-active bg-gradient-to-br from-purple-500 via-pink-500 to-orange-500 text-white"
                       : "text-gray-600"
                   }`}
-                  onClick={() => setEventType("nft")}
+                  onClick={() => {
+                    setEventType("nft");
+                    setCurrentPage(1);
+                    setSearchAddress("");
+                  }}
                 >
                   🏆 NFT Activity ({nftEvents?.length || 0})
                 </button>
@@ -100,30 +126,61 @@ const Events: NextPage = () => {
           </div>
         </div>
 
+        {/*Add search control */}
+        <div className="card bg-base-100 shadow-xl mb-6">
+          <div className="card-body">
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text font-bold">🔍 Search by Address</span>
+              </label>
+              <input
+                type="text"
+                placeholder="Enter address to filter (0x...)"
+                value={searhAddress}
+                onChange={e => {
+                  setSearchAddress(e.target.value);
+                  setCurrentPage(1);
+                }}
+              />
+              {searhAddress && (
+                <label className="label">
+                  <span className="label-text-alt">
+                    Found {filteredEvents.length} events matching &quot;{searhAddress}
+                  </span>
+                </label>
+              )}
+            </div>
+          </div>
+        </div>
+
         {/* Events Table */}
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-green-500 to-teal-600 p-1 shadow-2xl max-w-5xl mx-auto">
-          <div className="bg-white dark:bg-gray-800 rounded-3xl p-8">
-            <h2 className="text-3xl font-black mb-6 bg-gradient-to-r from-green-600 to-teal-600 bg-clip-text text-transparent">
-              {eventType === "token" ? "LSEA Token Events" : "LBB NFT Events"}
+        <div className="card bg-base-100 shadow-xl">
+          <div className="card-body">
+            <h2 className="card-title">
+              {eventType === "token" ? "🪙 Token Transfer Events" : "🎨 NFT Transfer Events"}
             </h2>
+
             {isLoading ? (
               <div className="flex justify-center py-8">
-                <span className="loading loading-spinner loading-lg text-green-600"></span>
+                <span className="loading loading-spinner loading-lg"></span>
+                <span className="ml-4">Loading events...</span>
               </div>
-            ) : currentEvents.length === 0 ? (
-              <div className="text-center py-8">
-                <p className="text-xl font-semibold text-gray-600 dark:text-gray-300">No events found</p>
-                <p className="text-gray-500 dark:text-gray-400">
-                  {eventType === "token"
-                    ? "Mint or transfer LSEA tokens to see events"
-                    : "Mint or transfer LBB NFTs to see events"}
+            ) : filteredEvents.length === 0 ? (
+              <div className="text-center py-8 text-gray-500">
+                <p className="text-xl mb-2">No events found</p>
+                <p className="text-sm">
+                  {searhAddress
+                    ? `No events match "${searhAddress}"`
+                    : eventType === "token"
+                    ? "Transfer some tokens to see events here"
+                    : "Mint some NFTs to see events here"}
                 </p>
               </div>
             ) : (
               <div className="overflow-x-auto">
-                <table className="table table-zebra w-full">
+                <table className="table table-zebra">
                   <thead>
-                    <tr className="text-sm text-gray-600 dark:text-gray-300">
+                    <tr>
                       <th>From</th>
                       <th>To</th>
                       <th>{eventType === "token" ? "Amount" : "Token ID"}</th>
@@ -132,7 +189,7 @@ const Events: NextPage = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {currentEvents.slice(0, 20).map((event, index) => (
+                    {paginatedEvents.map((event, index) => (
                       <tr key={`${event.log.transactionHash}-${index}`}>
                         <td>
                           <Address address={event.args.from} size="sm" />
@@ -142,22 +199,22 @@ const Events: NextPage = () => {
                         </td>
                         <td>
                           {eventType === "token" ? (
-                            <span className="font-mono">
-                              {Number(formatEther(event.transaction || 0n)).toFixed(4)} LSEA
+                            <span className="font-mono font-bold">
+                              {Number(formatEther(event.args[2] || 0n)).toFixed(2)} LSEA
                             </span>
                           ) : (
-                            <span className="badge badge-primary">#{event.args.values.toString()}</span>
+                            <span className="badge badge-primary badge-lg">#{event.args[2]?.toString()}</span>
                           )}
                         </td>
                         <td>
-                          <span className="text-sm">{event.log.blockNumber.toString()}</span>
+                          <span className="text-sm font-mono">{event.log.blockNumber.toString()}</span>
                         </td>
                         <td>
                           <a
                             href={`https://sepolia-blockscout.lisk.com/tx/${event.log.transactionHash}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="btn btn-sm btn-outline btn-primary"
+                            className="btn btn-xs btn-outline"
                           >
                             View →
                           </a>
@@ -170,6 +227,28 @@ const Events: NextPage = () => {
             )}
           </div>
         </div>
+
+        {/**Adding pagination controls */}
+        {filteredEvents.length > itemsPerPage && (
+          <div className="flex justify-center mt-6">
+            <div className="join">
+              <button
+                className="join-item btn"
+                onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                disabled={currentPage === 1}
+              >
+                « Previous
+              </button>
+              <button
+                className="join-item btn"
+                onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                disabled={currentPage === totalPages}
+              >
+                Next »
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Wallet Info */}
         <div className="card bg-base-200 dark:bg-gray-800 shadow-xl max-w-2xl mx-auto mt-8">
