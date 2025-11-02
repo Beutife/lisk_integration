@@ -9,7 +9,6 @@ import {
   DappConsoleButton,
   FaucetButton,
   RainbowKitCustomConnectButton,
-  SuperchainFaucetButton,
 } from "~~/components/scaffold-eth";
 import { useOutsideClick } from "~~/hooks/scaffold-eth";
 import { cn } from "~~/utils/cn";
@@ -27,10 +26,20 @@ export const menuLinks: HeaderMenuLink[] = [
     icon: <HomeIcon className="h-4 w-4" />,
   },
   {
-    label: "Debug Contracts",
-    href: "/debug",
-    icon: <BugAntIcon className="h-4 w-4" />,
+    label: "MyToken",
+    href: "/token",
+    icon: <span className="h-4 w-4">📜</span>,
   },
+  {
+    label: "MyNFT",
+    href: "/NFT",
+    icon: <span className="h-4 w-4">🏆</span>,
+  },
+  {
+  label: "Oracle",
+  href: "/oracle",
+  icon: <span className="h-4 w-4">🔮</span>,
+},
 ];
 
 export const HeaderMenuLinks = () => {
@@ -72,7 +81,7 @@ export const Header = () => {
   );
 
   return (
-    <header className="sticky lg:static top-0 navbar bg-base-900 min-h-0 flex-shrink-0 justify-between z-20 px-0 sm:px-2 border-b border-[#252442]">
+    <header className="sticky lg:static top-0 navbar bg-purple-900 min-h-0 flex-shrink-0 justify-between z-20 px-0 sm:px-2 border-b border-[#252442]">
       <div className="navbar-start w-auto lg:w-1/2">
         <div className="lg:hidden dropdown" ref={burgerMenuRef}>
           <label
@@ -111,9 +120,6 @@ export const Header = () => {
       </div>
       <div className="navbar-end flex-grow mr-4">
         <RainbowKitCustomConnectButton />
-        <FaucetButton />
-        <SuperchainFaucetButton />
-        <DappConsoleButton />
       </div>
     </header>
   );
